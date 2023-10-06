@@ -1,16 +1,63 @@
-var Song = Backbone.Model.extend();
-
-var SongView = Backbone.View.extend({
+var ArtistsView = Backbone.View.extend({
   render: function () {
-    var template = _.template($("#songTemplates").html());
-    var html = template(this.model.toJSON());
-    this.$el.html(html);
+    this.$el.html('ARTISTS VIEW');
     return this;
   }
 });
 
+var AlbumsView = Backbone.View.extend({
+  render: function () {
+    this.$el.html('ALBUMS VIEW');
+    return this;
+  }
+});
 
-var song = new Song({ title: "Blue in Green" });
+var GenresView = Backbone.View.extend({
+  render: function () {
+    this.$el.html('GENRES VIEW');
+    return this;
+  }
+});
 
-var songView = new SongView({ el: "#container", model: song });
-songView.render();
+var AppRouter = Backbone.Router.extend({
+  routes: {
+    "albums": "viewAlbums",
+    "albums/:albumId": "viewAlbumById",
+    "artists": "viewArtists",
+    "genres": "viewGenres",
+    "#other": "defaultRoutes",
+  },
+  viewArtists: function () {
+    var view = new ArtistsView({ el: "#container" });
+    view.render();
+  },
+  viewGenres: function () {
+    var view = new GenresView({ el: "#container" });
+    view.render();
+  },
+  viewAlbums: function () {
+    var view = new AlbumsView({ el: "#container" });
+    view.render();
+  },
+  viewAlbumById: function (albumId) {
+
+  },
+  defaultRoutes: function () {
+
+  }
+});
+
+var router = new AppRouter();
+Backbone.history.start();
+
+var NavView = Backbone.View.extend({
+  events: {
+    "click": "onClick"
+  },
+  onClick: function (e) {
+    var $li = $(e.target);
+    router.navigate($li.attr("data-url"), { trigger: true });
+  }
+})
+
+var navView = new NavView({ el: "#nav" })
