@@ -12,15 +12,16 @@ var TodoItemView = Backbone.View.extend({
   },
   onClickToggle: function () {
     this.model.toggle();
+    this.model.save();
   },
   onClickDelete: function () {
     this.model.destroy();
   },
   render: function () {
     this.$el.attr("id", this.model.id);
-    this.$el.toggleClass("completed", this.model.get("isCompleted"));
-    var checked = this.model.get("isCompleted") ? "checked" : "";
-    this.$el.html("<input id='toggle' type='checkbox'" + checked + "></input>" + this.model.escape("description") + "<button id='delete'>Delete</button>");
+    this.$el.toggleClass("completed", this.model.get("completed"));
+    var checked = this.model.get("completed") ? "checked" : "";
+    this.$el.html("<input id='toggle' type='checkbox'" + checked + "></input>" + this.model.escape("title") + "<button id='delete'>Delete</button>");
     return this;
   }
 });
